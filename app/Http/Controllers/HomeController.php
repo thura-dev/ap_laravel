@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Requests\storePostRequest;
 
 class HomeController extends Controller
 {
@@ -14,7 +16,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $data=Post::all();
+        // $data=Post::all();
+         $data=Post::orderBy('id', 'DESC')->get();
+        //  $data=Post::latest()->first();
+        //  dd($data);
         return  view('home',compact('data'));
     }
 
@@ -25,7 +30,8 @@ class HomeController extends Controller
      */
     public function create()
     {
-        //
+        $category =Category::all();
+        return view('create',compact('category'));
     }
 
     /**
@@ -34,53 +40,45 @@ class HomeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(storePostRequest $request)
     {
-        //
+        $validated=$request->validated();
+        Post::create($validated);
+        return redirect('/posts');
+  }
+
+
+    public function show(Post $post)
+    {
+        // $post=Post::findOrFail($id);
+
+
+        return view('show',compact('post'));
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+
+    public function edit(Post $post)
     {
-        //
+
+        $category=Category::all();
+        return view('edit',compact('post','category'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+
+    public function update(storePostRequest $request, Post $post)
     {
-        //
+
+    $validated=$request->validated();
+        $post->update($validated);
+        return redirect('/posts');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        //
+        // dd($id);
+        $post->delete();
+        return redirect('/posts');
     }
 }
