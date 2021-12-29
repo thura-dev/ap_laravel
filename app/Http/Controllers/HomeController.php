@@ -73,7 +73,7 @@ class HomeController extends Controller
         $post->update($validated);
         return redirect('/posts');
     }
-
+    
 
     public function destroy(Post $post)
     {
