@@ -60,7 +60,7 @@ class HomeController extends Controller
 
     public function edit(Post $post)
     {
-
+        
         $category=Category::all();
         return view('edit',compact('post','category'));
     }
