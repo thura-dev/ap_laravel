@@ -9,6 +9,10 @@ use App\Http\Requests\storePostRequest;
 
 class HomeController extends Controller
 {
+
+    public function __construct(){
+        $this->middleware('auth')->only('index','create');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +21,7 @@ class HomeController extends Controller
     public function index()
     {
         // $data=Post::all();
-         $data=Post::orderBy('id', 'DESC')->get();
+         $data=Post::where('user_id',auth()->id())->orderBy('id', 'DESC')->get();
         //  $data=Post::latest()->first();
         //  dd($data);
         return  view('home',compact('data'));
@@ -45,14 +49,17 @@ class HomeController extends Controller
         $validated=$request->validated();
         Post::create($validated);
         return redirect('/posts');
-  }
+    }
 
 
     public function show(Post $post)
     {
         // $post=Post::findOrFail($id);
 
-
+        // if($post->user_id != auth()->id()){
+        //     abort(403);
+        // }
+        $this->authorize('view', $post);
         return view('show',compact('post'));
 
     }
@@ -60,7 +67,10 @@ class HomeController extends Controller
 
     public function edit(Post $post)
     {
-        
+                // if($post->user_id != auth()->id()){
+                //     abort(403);
+                // }
+        $this->authorize('view', $post);
         $category=Category::all();
         return view('edit',compact('post','category'));
     }

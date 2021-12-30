@@ -14,7 +14,7 @@ use App\Http\Controllers\HomeController;
 | contains the "web" middleware group. Now create something great!
 |
  */
-Route::resource('/posts',HomeController::class);
+Route::resource('/posts',HomeController::class)->middleware(['auth']);
 Route::get('logout',[AuthController::class,'logout']);
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/posts',[HomeController::class,'index'] );
+// Route::middleware(['auth:sanctum', 'verified'])->get('/posts',[HomeController::class,'index'] );

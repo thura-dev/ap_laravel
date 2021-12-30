@@ -5,6 +5,7 @@
      <div>
           <a href="/posts/create" class="btn btn-success btn-sm">New Post</a>
           <a href="/logout" class="btn btn-warning btn-sm">Logout</a>
+          <h4 style="float:right">{{ Auth::user()->name }}</h4>
       </div>
       <br>
     <div class="card">
