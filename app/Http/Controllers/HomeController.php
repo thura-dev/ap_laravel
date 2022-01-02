@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\Category;
+// use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use App\Http\Requests\storePostRequest;
 
@@ -19,7 +20,37 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
+
     {
+
+//         $data = [
+//     'country' => 'India 🇮🇳',
+//     'languages' => [
+//         'Gujarati',
+//         'Hindi',
+//         'Sanskrit',
+//         'Tamil',
+//         'Urdu',
+//     ],
+// ];
+
+// dd(
+//    Arr::flatten($data)
+// );
+        // $posts=Post::all();
+        // $data=[];
+        // foreach($posts as $post){
+        //     $data[]=$post->name;
+        // }
+        // dd($data);
+        // dd(Post::pluck('name'));
+        // $collection=[1,2,3];
+
+        // $collection = collect([1,2,3])->map(function ($number) {
+        //     return $number>2;
+        // });
+        // dd($collection);
+        // dd(Post::all());
         // $data=Post::all();
          $data=Post::where('user_id',auth()->id())->orderBy('id', 'DESC')->get();
         //  $data=Post::latest()->first();
@@ -47,8 +78,8 @@ class HomeController extends Controller
     public function store(storePostRequest $request)
     {
         $validated=$request->validated();
-        Post::create($validated);
-        return redirect('/posts');
+        Post::create($validated + ['user_id'=>Auth()->user()->id]);
+        return redirect('/posts')->with('status', 'Post was created successfully');
     }
 
 
@@ -81,7 +112,7 @@ class HomeController extends Controller
 
     $validated=$request->validated();
         $post->update($validated);
-        return redirect('/posts');
+        return redirect('/posts')->with('status', 'Post was updated successfully');
     }
 
 
@@ -89,6 +120,6 @@ class HomeController extends Controller
     {
         // dd($id);
         $post->delete();
-        return redirect('/posts');
+        return redirect('/posts')->with('status', 'Post was deleted successfully');
     }
 }

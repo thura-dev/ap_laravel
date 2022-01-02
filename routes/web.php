@@ -1,5 +1,7 @@
 <?php
 
+use App\Test;
+use App\Container;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
@@ -18,3 +20,11 @@ Route::resource('/posts',HomeController::class)->middleware(['auth']);
 Route::get('logout',[AuthController::class,'logout']);
 
 // Route::middleware(['auth:sanctum', 'verified'])->get('/posts',[HomeController::class,'index'] );
+Route::get('/',function(){
+ $container =new Container();
+ $container->bind('test',function(){
+     return new Test();
+ });
+ $test=$container->resolve('test');
+ dd($test->syth());
+});

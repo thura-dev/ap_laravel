@@ -8,6 +8,15 @@
           <h4 style="float:right">{{ Auth::user()->name }}</h4>
       </div>
       <br>
+    @if (session('status'))
+        {{-- <div class="alert alert-success">
+            {{ session('status') }}
+        </div> --}}
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Success!</strong> {{ session('status') }}
+        </div>
+    @endif
     <div class="card">
   <div class="card-header" style="text-align: center">
     Contents
