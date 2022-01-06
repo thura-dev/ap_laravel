@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Test;
 use App\Models\Post;
-use App\Models\Category;
 // use Illuminate\Support\Arr;
+use App\Mail\PostStore;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\storePostRequest;
 
 class HomeController extends Controller
@@ -22,6 +25,10 @@ class HomeController extends Controller
     public function index()
 
     {
+        // Mail::raw('hello world',function($msg){
+        //     $msg->to('thura@gmail.com')->subject('I am index method');
+        // });
+            // dd(config('ap_programmer.info.third'));
 
 //         $data = [
 //     'country' => 'India 🇮🇳',
@@ -78,13 +85,16 @@ class HomeController extends Controller
     public function store(storePostRequest $request)
     {
         $validated=$request->validated();
-        Post::create($validated + ['user_id'=>Auth()->user()->id]);
-        return redirect('/posts')->with('status', 'Post was created successfully');
+        $post=Post::create($validated + ['user_id'=>Auth()->user()->id]);
+        Mail::to('thurathura@gmail.com')->send(new PostStore($post));
+        return redirect('/posts')->with('status',config('ap_programmer.messages.created'));
     }
 
 
-    public function show(Post $post)
+    public function show(Post $post,Test $test)
     {
+
+        // dd($test);
         // $post=Post::findOrFail($id);
 
         // if($post->user_id != auth()->id()){

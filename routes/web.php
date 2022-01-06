@@ -2,7 +2,10 @@
 
 use App\Test;
 use App\Container;
+use App\TestFacade;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Request;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 
@@ -21,10 +24,6 @@ Route::get('logout',[AuthController::class,'logout']);
 
 // Route::middleware(['auth:sanctum', 'verified'])->get('/posts',[HomeController::class,'index'] );
 Route::get('/',function(){
- $container =new Container();
- $container->bind('test',function(){
-     return new Test();
- });
- $test=$container->resolve('test');
- dd($test->syth());
+// return Request::input('name');
+return TestFacade:: excute();
 });
