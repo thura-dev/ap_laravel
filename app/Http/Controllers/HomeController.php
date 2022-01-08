@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Test;
 use App\Models\Post;
 // use Illuminate\Support\Arr;
+use App\Models\User;
 use App\Mail\PostStore;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\storePostRequest;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\PostCreatedNotifaction;
 
 class HomeController extends Controller
 {
@@ -25,6 +28,11 @@ class HomeController extends Controller
     public function index()
 
     {
+        $user= User::find(1);
+        $user->notify(new PostCreatedNotifaction());
+        // Notification::send(User::find(1), new PostCreatedNotifaction());
+        echo 'noti send';
+        exit();
         // Mail::raw('hello world',function($msg){
         //     $msg->to('thura@gmail.com')->subject('I am index method');
         // });
